@@ -7,6 +7,7 @@ package naivebayestextclassifier;
 import controller.Learner;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 /**
  *
@@ -25,7 +26,6 @@ public class NaiveBayesTextClassifier {
 
         String stopWord = "/Users/hadipratama/Documents/Kuliah/Machine_Learning/stopword.txt";
         String[] TargetClass = {"pos", "neg", "not"};
-        //ArrayList<String> docs = Tokenizer.doToken("/Users/hadipratama/Documents/Kuliah/Machine_Learning/twitter/nonopini_939.txt","/Users/hadipratama/Documents/Kuliah/Machine_Learning/stopword.txt");
 
         Learner l = new Learner();
         l.doLearning(path, TargetClass[2], stopWord);
@@ -36,14 +36,22 @@ public class NaiveBayesTextClassifier {
         for (Map.Entry<String, Double> entry : r.entrySet()) {
             String string = entry.getKey();
             Double integer = entry.getValue();
+            //System.out.println(string + ":" + integer);
         }
 
-        l.doClassifier("daku bisa buka homepagenya indosat pakai bb telkomsel saat xl bisa kesitu perasaan");
+        l.doClassifier("kenceng banget sinyal indosat malam ini, terima kasih indosat!");
         HashMap<String, Double> s = l.getScoreClass();
         for (Map.Entry<String, Double> entry : s.entrySet()) {
             String string = entry.getKey();
             Double double1 = entry.getValue();
-            System.out.println(string + ":" + double1);
+            //System.out.println(string + ":" + double1);
+        }
+        
+        TreeMap<Double, String> ss = l.getScoreClassSort();
+        for (Map.Entry<Double, String> entry : ss.entrySet()) {
+            Double double1 = entry.getKey();
+            String string = entry.getValue();
+            System.out.println(double1 + ":" + string);
         }
 
     }

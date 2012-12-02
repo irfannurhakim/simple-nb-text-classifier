@@ -11,6 +11,7 @@ import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 /**
  *
@@ -26,6 +27,7 @@ public class Learner {
     private HashMap<String, Double> posterior = new HashMap<String, Double>();
     private HashMap<String, String> stopWords = new HashMap<String, String>();
     private HashMap<String, Double> scoreClass = new HashMap<String, Double>();
+    private TreeMap<Double, String> scoreClassSort = new TreeMap<Double, String>();
 
     public Learner() {
     }
@@ -73,7 +75,6 @@ public class Learner {
     }
 
     public void doClassifier(String document) {
-
         for (Map.Entry<String, Double> entry : jumDokPerKelas.entrySet()) {
             posterior.put(entry.getKey(), entry.getValue() / jumSeluruhDok);
             scoreClass.put(entry.getKey(), new Double(1));
@@ -91,10 +92,12 @@ public class Learner {
                     } else {
                         freq = freq + 1;
                     }
+                    System.out.println(ret[i] + "-" + entry.getKey() + ":" + freq);
                     score = score * (freq / (jumTokenPerKelas.get(entry.getKey()) + jumSeluruhToken));
                 }
             }
-            scoreClass.put(entry.getKey(), posterior.get(entry.getKey()) * score);
+            //scoreClass.put(entry.getKey(), posterior.get(entry.getKey()) * score);
+            scoreClassSort.put( posterior.get(entry.getKey()) * score, entry.getKey());
         }
     }
 
@@ -160,5 +163,13 @@ public class Learner {
 
     public void setScoreClass(HashMap<String, Double> scoreClass) {
         this.scoreClass = scoreClass;
+    }
+
+    public TreeMap<Double, String> getScoreClassSort() {
+        return scoreClassSort;
+    }
+
+    public void setScoreClassSort(TreeMap<Double, String> scoreClassSort) {
+        this.scoreClassSort = scoreClassSort;
     }
 }
